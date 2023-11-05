@@ -1,108 +1,148 @@
-import React from "react";
-import { View, Text, VirtualizedList, StyleSheet, Image } from "react-native";
+import React, { useRef, useState } from "react";
+import {
+  View,
+  Text,
+  FlatList,
+  StyleSheet,
+  Image,
+  TouchableOpacity,
+  Animated,
+  Modal,
+  TextInput,
+  Button,
+  KeyboardAvoidingView,
+} from "react-native";
+import Pagination from "../components/Pagination";
+import motocyclesList from "../data/MotocyclesList";
+import CardMotocycles from "../components/CardMotocycles";
+import UpdateKM from "../components/UpdateKM";
 
-const motocyclesList = [
-  {
-    id: 33,
-    brand: "Honda",
-    model: "CB 500F",
-    title: "A moto perfeita para o dia a dia",
-    year: 2021,
-    img: "https://cdn.motor1.com/images/mgl/lZ4Kl/s3/honda-cb-500f-e-cb-500x-2020.jpg",
-  },
-  {
-    id: 34,
-    brand: "Yamaha",
-    model: "MT-07",
-    title: "A moto com o melhor custo-benefício",
-    year: 2022,
-    img: "https://motonewsbrasil.com/wp-content/uploads/2021/11/2022-yamaha-mt-07-cyan-storm-front-right.jpg",
-  },
-  {
-    id: 35,
-    brand: "Harley-Davidson",
-    model: "Sportster Iron 883",
-    title: "A moto clássica da Harley-Davidson",
-    year: 2021,
-    img: "https://ultimatemotorcycling.com/wp-content/uploads/2021/02/2021-Harley-Davidson-Sportster-Iron-883-Buyers-Guide-cruiser-motorcycle-1.jpg",
-  },
+const HomeScreen = ({ navigation }) => {
+  const [index, setIndex] = useState(0);
+  const [showUpdateKM, setShowUpdateKM] = useState(false);
+  const [updateKM, setUpdateKM] = useState("0");
+  const [viewableItems, setViewableItems] = useState(false);
+  const scrollX = useRef(new Animated.Value(0)).current;
 
-  {
-    id: 36,
-    brand: "Kawasaki",
-    model: "Z900",
-    title: "A moto esportiva da Kawasaki",
-    year: 2021,
-    img: "https://www.motorede.com.br/wp-content/uploads/2020/05/z900-2021-00-1024x768.jpg",
-  },
-];
+  const handleOnScroll = (event) => {
+    Animated.event(
+      [
+        {
+          nativeEvent: {
+            contentOffset: {
+              x: scrollX,
+            },
+          },
+        },
+      ],
+      {
+        useNativeDriver: false,
+      }
+    )(event);
+  };
 
-const renderItem = ({ item }) => (
-  <View style={styles.item}>
-    <Image source={{ uri: item.img }} style={styles.image} />
-    <View style={styles.content}>
-      <Text style={styles.name}>
-        {item.brand} {item.model} - {item.year}
-      </Text>
-      <Text numberOfLines={5} style={styles.title}>
-        {item.title}
-      </Text>
-    </View>
-  </View>
-);
-const SeparatorItem = () => {
-  return (
-    <View style={{ height: 1, width: "100%", backgroundColor: "#a0a0a0" }} />
-  );
-};
+  const handleOnViewableItemsChanged = useRef(({ viewableItems }) => {
+    //console.log("viewableItems", viewableItems);
+    //setViewableItems(viewableItems[0]);
+    setUpdateKM(String(viewableItems[0].item.km));
+    setIndex(viewableItems[0].index);
+  }).current;
 
-const getItemHeight = () => 5; // Defina a altura desejada para cada item
+  const viewabilityConfig = useRef({
+    itemVisiblePercentThreshold: 50,
+  }).current;
 
-const HomeScreen = () => {
+  const up = () => {
+    setShowUpdateKM(true);
+  };
+
   return (
     <View style={styles.container}>
-      <VirtualizedList
-        ItemSeparatorComponent={SeparatorItem}
-        data={motocyclesList}
-        keyExtractor={(item) => item.id}
-        renderItem={renderItem}
-        getItem={(_, index) => motocyclesList[index]}
-        getItemCount={() => motocyclesList.length}
-        getItemHeight={getItemHeight}
-      />
+      <Modal
+        style={{ flex: 1 }}
+        animationType="fade"
+        transparent={true}
+        visible={showUpdateKM}
+      >
+        <View style={styles.modalBackground}>
+          <View
+            style={styles.conteiner}
+            //behavior="height" // Escolha o comportamento desejado (padding, position, height)
+          >
+            <View style={styles.fechar}>
+              <Text
+                onPress={() => setShowUpdateKM(false)}
+                style={styles.txFechar}
+              >
+                fechar X
+              </Text>
+            </View>
+            <View style={styles.conteudoModal}>
+              <Text style={styles.mensagem}>
+                Insira a quilometragem em km atual do veículo
+              </Text>
+              <TextInput
+                placeholder={updateKM}
+                //onChangeText={(text) => setUpdateKM(text)}
+                style={styles.input}
+                keyboardType="numeric"
+              />
+              <View style={styles.salvar}>
+                <Text
+                  style={styles.txSalvar}
+                  onPress={() => setShowUpdateKM(false)}
+                >
+                  Salvar
+                </Text>
+              </View>
+            </View>
+          </View>
+        </View>
+      </Modal>
+      <View>
+        <FlatList
+          data={motocyclesList}
+          renderItem={({ item }) => <CardMotocycles item={item} update={up} />}
+          horizontal
+          pagingEnabled
+          snapToAlignment="center"
+          showsHorizontalScrollIndicator={false}
+          onScroll={handleOnScroll}
+          onViewableItemsChanged={handleOnViewableItemsChanged}
+          viewabilityConfig={viewabilityConfig}
+        />
+      </View>
+      <View style={styles.viewNotification}></View>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
+  viewNotification: {
+    flex: 1,
+    flexDirection: "column",
+    backgroundColor: "white",
+    justifyItems: "center",
+    borderRadius: 20,
+    paddingHorizontal: 10,
+    paddingVertical: 10,
+    marginHorizontal: 10,
+    marginTop: 20,
+    marginBottom: 90,
+    width: 340,
+  },
   container: {
     flex: 1,
-    backgroundColor: "#fff",
+    backgroundColor: "#c2c2c2",
+    flexDirection: "column",
+    justifyContent: "center",
   },
-  item: {
-    flex: 1,
-    flexDirection: "row",
-    backgroundColor: "#fff",
-    justifyItems: "center",
-    justifyContent: "space-between",
-    borderRadius: 20,
-    paddingHorizontal: 16,
-    paddingVertical: 20,
+  carouselContent: {
+    alignItems: "center",
   },
   content: {
     flex: 1,
     marginLeft: 16,
-  },
-  image: {
-    borderRadius: 20,
-    width: 170,
-    height: 150,
-  },
-  name: {
-    fontSize: 20,
-    fontWeight: "bold",
-    color: "black",
-    marginBottom: 16,
   },
   title: {
     fontSize: 16,
@@ -118,6 +158,84 @@ const styles = StyleSheet.create({
     fontSize: 36,
     fontWeight: "bold",
     color: "#FFF",
+  },
+  label: {},
+  conteiner: {
+    flex: 1,
+    flexDirection: "column",
+    rowGap: 5,
+    position: "absolute",
+    top: -100,
+    alignSelf: "center",
+    backgroundColor: "white",
+    borderRadius: 33,
+    justifyContent: "center",
+    alignItems: "center",
+    marginVertical: "80%",
+    marginHorizontal: 20,
+
+    width: "95%",
+    borderBlockColor: "black",
+    borderWidth: 2,
+  },
+  fechar: {
+    borderBlockColor: "black",
+    borderWidth: 1,
+    borderRadius: 20,
+    width: 100,
+    textAlign: "center",
+    backgroundColor: "#f4dddd",
+    position: "absolute",
+    top: 10,
+    right: 20,
+  },
+  txFechar: {
+    //textDecorationLine: "underline",
+    fontSize: 17,
+    alignSelf: "center",
+    fontWeight: "bold",
+  },
+  salvar: {
+    borderBlockColor: "black",
+    borderWidth: 1,
+    borderRadius: 20,
+    width: 100,
+    textAlign: "center",
+    backgroundColor: "#58be5a",
+  },
+  txSalvar: {
+    //textDecorationLine: "underline",
+    fontSize: 17,
+    alignSelf: "center",
+    fontWeight: "bold",
+    color: "white",
+  },
+
+  conteudoModal: {
+    flex: 1,
+    flexDirection: "column",
+    rowGap: 10,
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginTop: 60,
+    marginBottom: 40,
+  },
+  mensagem: {
+    alignSelf: "center",
+  },
+  input: {
+    width: 100,
+    height: 40,
+    borderWidth: 1,
+    borderColor: "gray",
+    alignSelf: "center",
+    textAlign: "center",
+  },
+  modalBackground: {
+    flex: 1,
+    backgroundColor: "rgba(0, 0, 0, 0.5)", // Cor de fundo semitransparente
+    justifyContent: "center",
+    alignItems: "center",
   },
 });
 

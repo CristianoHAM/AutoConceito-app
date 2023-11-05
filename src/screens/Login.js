@@ -67,7 +67,10 @@ export default function LoginScreen({ navigation }) {
         </View>
       </Modal>
 
-      <Image source={require("../assets/avatar.png")} style={styles.imagem} />
+      <Image
+        source={require("../../assets/avatar.png")}
+        style={styles.imagem}
+      />
       <View style={styles.switchSC}>
         <Text>Continuar conectado</Text>
         <Switch

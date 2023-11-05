@@ -31,14 +31,14 @@ function Routes() {
       }}
     >
       <Tab.Screen
-        name="Manutenções"
-        component={ManutençõesScreen}
+        name="Home"
+        component={HomeScreen}
         options={{
           tabBarIcon: ({ color, size, focused }) => {
             if (focused) {
-              return <Entypo name="tools" size={50} color={color} />;
+              return <Ionicons name="home" size={50} color={color} />;
             }
-            return <Entypo name="tools" size={35} color={color} />;
+            return <Ionicons name="home-sharp" size={35} color={color} />;
           },
           headerStyle: {
             backgroundColor: "#58be5a",
@@ -53,14 +53,14 @@ function Routes() {
         }}
       />
       <Tab.Screen
-        name="Home"
-        component={HomeScreen}
+        name="Manutenções"
+        component={ManutençõesScreen}
         options={{
           tabBarIcon: ({ color, size, focused }) => {
             if (focused) {
-              return <Ionicons name="home" size={50} color={color} />;
+              return <Entypo name="tools" size={50} color={color} />;
             }
-            return <Ionicons name="home-sharp" size={35} color={color} />;
+            return <Entypo name="tools" size={35} color={color} />;
           },
           headerStyle: {
             backgroundColor: "#58be5a",

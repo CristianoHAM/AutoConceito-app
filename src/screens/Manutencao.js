@@ -85,6 +85,7 @@ const styles = StyleSheet.create({
     flex: 1,
     //paddingTop: StatusBar.currentHeight,
     //marginHorizontal: ,
+    backgroundColor: "#c2c2c2",
   },
   item: {
     backgroundColor: "#e9e9e9",
