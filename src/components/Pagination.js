@@ -23,7 +23,7 @@ const Pagination = ({ data, scrollX, index }) => {
 
         const backgroundColor = scrollX.interpolate({
           inputRange,
-          outputRange: ["#ccc", "#000", "#ccc"],
+          outputRange: ["#555", "#000", "#555"],
           extrapolate: "clamp",
         });
 
@@ -47,7 +47,7 @@ export default Pagination;
 const styles = StyleSheet.create({
   container: {
     position: "absolute",
-    bottom: 35,
+    bottom: -17,
     flexDirection: "row",
     width: "100%",
     alignItems: "center",
@@ -58,9 +58,9 @@ const styles = StyleSheet.create({
     height: 12,
     borderRadius: 6,
     marginHorizontal: 3,
-    backgroundColor: "#ccc",
+    backgroundColor: "#fff",
   },
   dotActive: {
-    backgroundColor: "#000",
+    backgroundColor: "#fff",
   },
 });

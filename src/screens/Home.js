@@ -11,11 +11,15 @@ import {
   TextInput,
   Button,
   KeyboardAvoidingView,
+  Dimensions,
 } from "react-native";
 import Pagination from "../components/Pagination";
-import motocyclesList from "../data/MotocyclesList";
-import CardMotocycles from "../components/CardMotocycles";
+import VeicleList from "../data/MotocyclesList";
+import CardVeicle from "../components/CardVeicle";
+import { Ionicons, Entypo } from "@expo/vector-icons";
 import UpdateKM from "../components/UpdateKM";
+
+const screenWidth = Dimensions.get("screen").width;
 
 const HomeScreen = ({ navigation }) => {
   const [index, setIndex] = useState(0);
@@ -55,6 +59,8 @@ const HomeScreen = ({ navigation }) => {
   const up = () => {
     setShowUpdateKM(true);
   };
+
+  const viewWidth = screenWidth * 0.95;
 
   return (
     <View style={styles.container}>
@@ -101,8 +107,8 @@ const HomeScreen = ({ navigation }) => {
       </Modal>
       <View>
         <FlatList
-          data={motocyclesList}
-          renderItem={({ item }) => <CardMotocycles item={item} update={up} />}
+          data={VeicleList}
+          renderItem={({ item }) => <CardVeicle item={item} update={up} />}
           horizontal
           pagingEnabled
           snapToAlignment="center"
@@ -111,8 +117,25 @@ const HomeScreen = ({ navigation }) => {
           onViewableItemsChanged={handleOnViewableItemsChanged}
           viewabilityConfig={viewabilityConfig}
         />
+        <Pagination
+          style={styles.pagination}
+          data={VeicleList}
+          scrollX={scrollX}
+          index={index}
+        />
       </View>
-      <View style={styles.viewNotification}></View>
+      <View style={[styles.viewNotification, { width: viewWidth }]}>
+        <View style={styles.headerNotification}>
+          <Ionicons
+            style={styles.iconNotification}
+            name="notifications"
+            size={30}
+            color={"#555"}
+          />
+          <Text style={styles.textHN}>Notificações</Text>
+        </View>
+        <View style={styles.separetionHN} />
+      </View>
     </View>
   );
 };
@@ -127,10 +150,35 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     paddingVertical: 10,
     marginHorizontal: 10,
-    marginTop: 20,
+    marginTop: 25,
     marginBottom: 90,
-    width: 340,
+    paddingHorizontal: 0,
   },
+  headerNotification: {
+    flexDirection: "row",
+    // borderWidth: 3,
+    //  borderColor: "black",
+    height: 40,
+    justifyContent: "center",
+  },
+  textHN: {
+    fontSize: 25,
+    fontWeight: "bold",
+    color: "#555",
+    // borderWidth: 3,
+    //borderColor: "black",
+  },
+  iconNotification: {
+    position: "absolute",
+    alignSelf: "center",
+    left: 10,
+  },
+  separetionHN: {
+    height: 1,
+    width: "100%",
+    backgroundColor: "#555",
+  },
+
   container: {
     flex: 1,
     backgroundColor: "#c2c2c2",

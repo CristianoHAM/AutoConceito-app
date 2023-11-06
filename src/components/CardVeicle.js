@@ -5,12 +5,15 @@ import {
   Image,
   TouchableOpacity,
   Modal,
+  Dimensions,
 } from "react-native";
 import React, { useState } from "react";
+const screenWidth = Dimensions.get("screen").width;
 
-const CardMotocycles = ({ item, update }) => {
+const CardVeicle = ({ item, update }) => {
+  const viewWidth = screenWidth * 0.95;
   return (
-    <View style={styles.item}>
+    <View style={[styles.item, { width: viewWidth }]}>
       <View style={styles.cardViewLeft}>
         <Image source={{ uri: item.img }} style={styles.image} />
         <View style={styles.cardViewDown}>
@@ -40,7 +43,7 @@ const CardMotocycles = ({ item, update }) => {
             </Text>
           </View>
           <Text numberOfLines={5} style={styles.txPlaca}>
-            PYX-1020
+            {item.placa}
           </Text>
         </View>
       </View>
@@ -54,13 +57,15 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     backgroundColor: "white",
     justifyItems: "center",
-    justifyContent: "space-between",
+    justifyContent: "space-around",
     borderRadius: 20,
     paddingHorizontal: 10,
     paddingVertical: 10,
     marginHorizontal: 10,
     marginTop: 20,
-    width: 340,
+
+    //borderWidth: 2,
+    //borderColor: "black",
     height: 230,
     rowGap: 10,
   },
@@ -95,22 +100,30 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     justifyContent: "flex-start",
     rowGap: 10,
+    // borderWidth: 2,
+    //borderColor: "black",
   },
   cardViewRight: {
     flexDirection: "column",
     justifyContent: "flex-start",
+    // borderWidth: 2,
+    //borderColor: "black",
   },
   cardViewUp: {
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "flex-start",
     height: 150,
+    //borderWidth: 2,
+    //borderColor: "black",
   },
   cardViewDown: {
     flexDirection: "row",
-    justifyContent: "flex-start",
+    justifyContent: "space-around",
     alignItems: "flex-end",
     columnGap: 5,
+    //borderWidth: 2,
+    //borderColor: "black",
   },
   tkm: {
     flexDirection: "row",
@@ -140,4 +153,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default CardMotocycles;
+export default CardVeicle;
