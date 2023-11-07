@@ -67,7 +67,7 @@ const styles = StyleSheet.create({
     //borderWidth: 2,
     //borderColor: "black",
     height: 230,
-    rowGap: 10,
+    columnGap: 15,
   },
   placa: {
     backgroundColor: "white",
@@ -143,10 +143,13 @@ const styles = StyleSheet.create({
   },
   km: { fontSize: 19 },
   name: {
-    fontSize: 29,
+    fontSize: 25,
     fontWeight: "bold",
     color: "black",
     width: 137,
+    height: 148,
+    // borderColor: "black",
+    // borderWidth: 1,
   },
   buttonText: {
     fontSize: 17,

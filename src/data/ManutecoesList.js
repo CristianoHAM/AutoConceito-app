@@ -1,9 +1,9 @@
 export default [
   {
     id: 33,
-    brand: "Honda",
-    model: "CB 500F",
-    year: 2021,
+    brand: "Volkswagen",
+    model: "Gol Comfortiline",
+    year: 2017,
     placa: "PYD-9909",
     data: [
       {
@@ -28,9 +28,9 @@ export default [
   },
   {
     id: 34,
-    brand: "Yamaha",
-    model: "MT-07",
-    year: 2022,
+    brand: "Fiat",
+    model: "Fiat Palio Fire 1.0",
+    year: 2015,
     placa: "PIX-3501",
     data: [
       {
@@ -55,8 +55,8 @@ export default [
   },
   {
     id: 35,
-    brand: "Harley-Davidson",
-    model: "Sportster Iron 883",
+    brand: "Renault",
+    model: "Renalt Sandero 1.0 Life",
     year: 2021,
     placa: "ADS-0001",
     data: [

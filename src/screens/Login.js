@@ -31,7 +31,7 @@ export default function LoginScreen({ navigation }) {
       setUserAuthenticated(true);
       navigation.reset({
         index: 0,
-        routes: [{ name: "Home" }],
+        routes: [{ name: "Routes" }],
       });
       console.log("Usuário autenticado");
     } else {
@@ -66,11 +66,11 @@ export default function LoginScreen({ navigation }) {
           <Text style={styles.txErroAut}>Usuário ou senha incorreta!</Text>
         </View>
       </Modal>
-
       <Image
-        source={require("../../assets/avatar.png")}
-        style={styles.imagem}
+        style={styles.logoMarca}
+        source={require("../../assets/logoSF.jpeg")}
       />
+
       <View style={styles.switchSC}>
         <Text>Continuar conectado</Text>
         <Switch
@@ -146,7 +146,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   button: {
-    backgroundColor: "blue",
+    backgroundColor: "#58be5a",
     alignItems: "center",
     width: "70%",
     padding: 10,
@@ -188,5 +188,10 @@ const styles = StyleSheet.create({
     right: 30,
     textDecorationLine: "underline",
     fontSize: 17,
+  },
+  logoMarca: {
+    width: 190,
+    height: 62,
+    marginBottom: 50,
   },
 });
